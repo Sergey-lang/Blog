@@ -2,18 +2,21 @@ import React from 'react';
 import Link from 'next/link';
 import { Paper, Button, IconButton, Avatar } from '@material-ui/core';
 import {
-  SearchOutlined as SearchIcon,
-  SmsOutlined as MessageIcon,
+  AccountCircleOutlined as UserIcon,
   Menu as MenuIcon,
   ExpandMoreOutlined as ArrowBottom,
   NotificationsNoneOutlined as NotificationIcon,
-  AccountCircleOutlined as UserIcon,
+  SearchOutlined as SearchIcon,
+  SmsOutlined as MessageIcon,
 } from '@material-ui/icons';
 
 import styles from './Header.module.scss';
 import { AuthDialog } from '../AuthDialog';
+import { useAppSelector } from "../../redux/hooks";
+import { selectUserData } from "../../redux/slices/user";
 
 export const Header: React.FC = () => {
+  const userData = useAppSelector(selectUserData);
   const [authVisible, setAuthVisible] = React.useState(false);
 
   const openAuthDialog = () => {
@@ -56,20 +59,25 @@ export const Header: React.FC = () => {
         <IconButton>
           <NotificationIcon />
         </IconButton>
-        {/*<Link href="/profile/1">*/}
-        {/*  <a className="d-flex align-center">*/}
-        {/*    <Avatar*/}
-        {/*      className={styles.avatar}*/}
-        {/*      alt="Remy Sharp"*/}
-        {/*      src="https://leonardo.osnova.io/5ffeac9a-a0e5-5be6-98af-659bfaabd2a6/-/scale_crop/108x108/-/format/webp/"*/}
-        {/*    />*/}
-        {/*    <ArrowBottom />*/}
-        {/*  </a>*/}
-        {/*</Link>*/}
-        <div className={styles.loginButton} onClick={openAuthDialog}>
-          <UserIcon />
-          Войти
-        </div>
+        {
+          userData ? (
+            <Link href="/profile/1">
+              <a className="d-flex align-center">
+                <Avatar
+                  className={styles.avatar}
+                  alt="Remy Sharp"
+                  src="https://leonardo.osnova.io/5ffeac9a-a0e5-5be6-98af-659bfaabd2a6/-/scale_crop/108x108/-/format/webp/"
+                />
+                <ArrowBottom />
+              </a>
+            </Link>
+          ) : (
+            <div className={styles.loginButton} onClick={openAuthDialog}>
+              <UserIcon />
+              Войти
+            </div>
+          )
+        }
       </div>
       <AuthDialog onClose={closeAuthDialog} visible={authVisible} />
     </Paper>
