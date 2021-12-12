@@ -5,7 +5,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { RegisterFormSchema } from '../../../utils/validations';
 import { FormField } from '../../FormField';
-import { UserApi } from "../../../utils/api";
+import { UserApi } from "../../../utils/api/user";
 import { CreateUserDto } from "../../../utils/api/types";
 import Alert from "@material-ui/lab/Alert";
 import { setUserData } from "../../../redux/slices/user";
