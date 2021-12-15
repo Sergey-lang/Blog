@@ -3,26 +3,34 @@ import { Button, Input } from '@material-ui/core';
 import styles from './WriteForm.module.scss';
 import dynamic from 'next/dynamic';
 import { Api } from "../../utils/api";
+import { PostItem } from "../../utils/api/types";
+import { useRouter } from "next/router";
 
 const Editor = dynamic(() => import('../Editor').then((m) => m.Editor), { ssr: false });
 
 interface WriteFormProps {
-  data?: any;
+  data?: PostItem;
 }
 
-export const WriteForm: React.FC<WriteFormProps> = () => {
+export const WriteForm: React.FC<WriteFormProps> = ({ data }) => {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const [title, setTitle] = useState('');
-  const [blocks, setBlocks] = useState([]);
+  const [title, setTitle] = useState(data?.title || '');
+  const [blocks, setBlocks] = useState(data?.body || []);
 
   const onAddPost = async () => {
     try {
       setIsLoading(true);
-      const post = await Api().post.create({
+      const obj = {
         title,
         body: blocks,
-      })
-      console.log(post)
+      }
+      if (!data) {
+        const post = await Api().post.create(obj)
+        await router.push(`/write/${post.id}`);
+      } else {
+        await Api().post.update(data.id, obj)
+      }
     } catch (err) {
       console.warn('Create post', err)
       alert(err)
@@ -39,10 +47,11 @@ export const WriteForm: React.FC<WriteFormProps> = () => {
              placeholder="Заголовок"
              defaultValue={title} />
       <div className={styles.editor}>
-        <Editor onChange={(arr) => setBlocks(arr)} />
+        <Editor initialBlocks={data?.body} onChange={(arr) => setBlocks(arr)} />
       </div>
-      <Button disabled={isLoading} onClick={onAddPost} variant="contained" color="primary">
-        Опубликовать
+      <Button disabled={isLoading || !blocks.length || !title.length} onClick={onAddPost} variant="contained"
+              color="primary">
+        {data ? 'Сохранить' : 'Опубликовать'}
       </Button>
     </div>
   );

@@ -3,11 +3,16 @@ import { GetServerSideProps, NextPage } from 'next';
 import { MainLayout } from "../../layouts/MainLayout";
 import { WriteForm } from "../../components/WriteForm";
 import { Api } from "../../utils/api";
+import { PostItem } from "../../utils/api/types";
 
-const WritePage: NextPage = () => {
+interface WritePageProps {
+  post: PostItem;
+}
+
+const WritePage: NextPage<WritePageProps> = ({ post }) => {
   return (
     <MainLayout className="main-layout-white" hideComments hideMenu>
-      <WriteForm />
+      <WriteForm data={post} />
     </MainLayout>
   );
 };
