@@ -4,11 +4,17 @@
   width: 100%;
   align-items: center;
   justify-content: space-between;
-  background-color: #e2ffe7 !important;
+  background-color: #FFF4E2 !important;
   padding: 0 35px 0 10px;
   height: 60px;
   margin-bottom: 14px;
   z-index: 1;
+}
+
+.searchBlockPopup {
+  position: absolute !important;
+  top: 40px;
+  width: 310px;
 }
 
 .logo {

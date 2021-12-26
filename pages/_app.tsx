@@ -8,9 +8,6 @@ import { theme } from '../theme';
 
 import '../styles/globals.scss';
 import 'macro-css';
-import { GetServerSideProps } from "next";
-import { parseCookies } from "nookies";
-import { UserApi } from "../utils/api/user";
 import { setUserData } from "../redux/slices/user";
 import { Component } from "react";
 import { Api } from "../utils/api";
